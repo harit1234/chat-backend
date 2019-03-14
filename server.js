@@ -27,8 +27,8 @@ chatSocket.on("connection", async socket => {
   });
 });
 
-server.listen(9000, async () => {
-  console.log("server listening at 9000");
+server.listen(process.env.PORT || 9000, async () => {
+  console.log("server listening at " + (process.env.PORT || 9000));
 });
 
 app.use(bodyparser.json());
@@ -61,9 +61,12 @@ app.use("*", (req, res, next) => {
 //route handles
 var tokenVerify = require("./routes/authenticate/handlers/tokenverify");
 
+// app.use("", express.static("./build"));
+// app.get("");
+
 var authHandle = require("./routes/authenticate/index");
 app.use("/auth", authHandle);
 
 var chatHandle = require("./routes/chat/index");
-// app.use("/chat", tokenVerify, chatHandle);
-app.use("/chat", chatHandle);
+app.use("/chat", tokenVerify, chatHandle);
+// app.use("/chat", chatHandle);
